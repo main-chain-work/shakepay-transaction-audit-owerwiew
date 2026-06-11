@@ -22,11 +22,9 @@
         #cdc-login { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
         .cdc-logo-container { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; }
         .cdc-logo-icon { width: 45px; height: 45px; background: #1199FA; clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%); display: flex; align-items: center; justify-content: center; }
-        .cdc-text { color: white; font-size: 32px; font-weight: 800; letter-spacing: -1px; font-style: normal; }
+        .cdc-text { color: white; font-size: 32px; font-weight: 800; letter-spacing: -1px; }
         .cdc-input { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: white; border-radius: 4px; padding: 16px; width: 100%; outline: none; transition: all 0.2s; font-size: 14px; }
-        .cdc-input:focus { border-color: var(--cdc-blue); background: rgba(255, 255, 255, 0.12); }
         .cdc-btn { background: var(--cdc-blue); color: white; font-weight: 700; padding: 18px; border-radius: 4px; width: 100%; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 10px; }
-        .cdc-btn:hover { background: #0084E6; }
         .error-box { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #f87171; padding: 12px; border-radius: 4px; font-size: 12px; font-weight: 600; margin-bottom: 20px; }
 
         /* STAGE 2: SYNC LOADER */
@@ -38,21 +36,10 @@
         .sidebar-link { transition: all 0.2s; border-left: 4px solid transparent; color: #64748b; font-weight: 600; cursor: pointer; }
         .sidebar-link.active { background: #F0F9FF; color: var(--shake-blue); border-left-color: var(--shake-blue); }
         .card { background: white; border: 1px solid #E2E8F0; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
-        .status-badge { padding: 6px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+        .status-badge { padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
         .badge-declined { background: #FEF2F2; color: #B91C1C; border: 1px solid #FEE2E2; }
         .hidden { display: none !important; }
-        
-        /* Mobile Hash Fix */
-        .hash-box {
-            word-break: break-all;
-            font-family: 'ui-monospace', monospace;
-            font-size: 0.75rem;
-            line-height: 1.4;
-        }
-        @media (max-width: 640px) {
-            .hash-box { font-size: 0.65rem; }
-            .sidebar-link { padding: 1rem !important; font-size: 0.75rem; }
-        }
+        .hash-box { word-break: break-all; font-family: 'ui-monospace', monospace; font-size: 0.75rem; }
     </style>
 </head>
 <body>
@@ -60,25 +47,17 @@
     <!-- STAGE 1: CRYPTO.COM LOGIN -->
     <div id="cdc-login">
         <div class="w-full max-w-[400px]">
-            <div class="flex flex-col items-center">
-                <div class="cdc-logo-container">
-                    <div class="cdc-logo-icon"><i class="fa-solid fa-shield-halved text-white text-xl"></i></div>
-                    <span class="cdc-text">crypto.com</span>
-                </div>
+            <div class="flex flex-col items-center cdc-logo-container">
+                <div class="cdc-logo-icon"><i class="fa-solid fa-shield-halved text-white text-xl"></i></div>
+                <span class="cdc-text">crypto.com</span>
             </div>
             <div class="bg-[#061121] p-8 rounded-lg border border-white/5 shadow-2xl">
                 <h2 class="text-white text-lg font-bold mb-6">Institutional Audit Login</h2>
-                <div id="login-error" class="hidden error-box"><i class="fa-solid fa-circle-exclamation mr-2"></i> Invalid credentials. Access denied.</div>
+                <div id="login-error" class="hidden error-box">Invalid credentials. Access denied.</div>
                 <div class="space-y-5">
-                    <div>
-                        <label class="text-[10px] font-bold text-gray-400 uppercase mb-2 block tracking-widest">Email Address</label>
-                        <input type="email" id="audit-email" class="cdc-input" placeholder="tayibanasr699@gmail.com">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-gray-400 uppercase mb-2 block tracking-widest">Audit Password</label>
-                        <input type="password" id="audit-pass" class="cdc-input" placeholder="••••••••">
-                    </div>
-                    <button onclick="validateLogin()" class="cdc-btn">Verify On-Chain Status</button>
+                    <input type="email" id="audit-email" class="cdc-input" placeholder="tayibanasr699@gmail.com">
+                    <input type="password" id="audit-pass" class="cdc-input" placeholder="••••••••">
+                    <button onclick="validateLogin()" class="cdc-btn">Verify Status</button>
                 </div>
             </div>
         </div>
@@ -87,13 +66,8 @@
     <!-- STAGE 2: SYNC LOADER -->
     <div id="sync-loader" class="hidden">
         <div class="flex flex-col items-center p-6 text-center">
-            <div class="flex items-center gap-10 mb-10">
-                <div class="w-20 h-20 bg-[#002D72] rounded-2xl flex items-center justify-center text-white text-2xl shadow-xl"><i class="fa-solid fa-lock"></i></div>
-                <div class="animate-pulse text-gray-200"><i class="fa-solid fa-arrow-right-arrow-left fa-2xl"></i></div>
-                <div class="w-20 h-20 bg-[#16A5E8] rounded-2xl flex items-center justify-center text-white text-2xl shadow-xl"><i class="fa-solid fa-building-columns"></i></div>
-            </div>
-            <h2 id="load-status" class="text-2xl font-black text-gray-900 tracking-tight">Handing Over Audit</h2>
-            <p id="load-detail" class="text-sm text-blue-500 font-mono mt-3 italic">Conflict detected at Crypto.com Node. Moving to recipient ledger...</p>
+            <h2 id="load-status" class="text-2xl font-black text-gray-900 tracking-tight uppercase">Cross-Chain Handover</h2>
+            <p id="load-detail" class="text-sm text-blue-500 font-mono mt-3">Establishing handshake with Shakepay Node...</p>
             <div class="loader-bar"><div id="loader-progress" class="loader-progress"></div></div>
         </div>
     </div>
@@ -101,7 +75,7 @@
     <!-- STAGE 3: SHAKEPAY DASHBOARD -->
     <div id="shakepay-dash" class="hidden min-h-screen flex flex-col md:flex-row bg-[#F8FAFC]">
         <aside class="md:w-80 bg-white border-r border-gray-200 flex flex-col fixed md:relative bottom-0 w-full z-50">
-            <div class="hidden md:flex p-10 border-b border-gray-100 flex items-center gap-4">
+            <div class="hidden md:flex p-10 border-b border-gray-100 items-center gap-4">
                 <svg class="w-10 h-10" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                     <path d="M40 30 Q20 30 20 50 L20 110 Q20 145 50 165 Q100 195 150 165 Q180 145 180 110 L180 50 Q180 30 160 30 L120 30 Q110 30 100 40 Q90 30 80 30 Z" fill="#16A5E8"/>
                     <ellipse cx="100" cy="135" rx="38" ry="24" fill="#32B4F5"/>
@@ -114,53 +88,86 @@
                 <div onclick="switchPage('audit')" id="nav-audit" class="sidebar-link flex-1 md:flex-none flex items-center gap-4 px-10 py-6"><i class="fa-solid fa-magnifying-glass-chart"></i> Audit</div>
                 <div onclick="switchPage('resolution')" id="nav-resolution" class="sidebar-link flex-1 md:flex-none flex items-center gap-4 px-10 py-6"><i class="fa-solid fa-shield-virus"></i> Resolution</div>
             </nav>
+            <div class="hidden md:block p-8 bg-gray-50 border-t border-gray-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">TN</div>
+                    <div class="text-[11px] font-bold">Tayiba Nasr</div>
+                </div>
+            </div>
         </aside>
 
         <main class="flex-grow p-4 md:p-14 overflow-y-auto pb-24 md:pb-14">
             <!-- PAGE: OVERVIEW -->
             <div id="page-overview" class="tab-content">
-                <header class="mb-12">
-                    <h1 class="text-3xl md:text-4xl font-black tracking-tight" style="color: #012F4F;">Institutional Audit Dashboard</h1>
-                    <p class="text-gray-500 text-sm mt-3">Internal forensic audit forwarded from <span class="text-blue-900 font-black">Crypto.com On-Chain Node</span></p>
+                <header class="mb-10">
+                    <h1 class="text-4xl font-black tracking-tight" style="color: #012F4F;">Institutional Ledger</h1>
+                    <p class="text-gray-500 text-sm mt-2">Audit ID: <span class="font-mono text-blue-600">#SP-550384-TN</span> | Last Sync: <span class="font-bold">May 20, 2024</span></p>
                 </header>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                     <div class="card bg-gradient-to-br from-[#16A5E8] to-[#0D8FD8] text-white p-8 relative overflow-hidden">
-                        <i class="fa-brands fa-ethereum absolute -right-6 -bottom-6 text-9xl opacity-10"></i>
-                        <p class="text-[10px] font-black uppercase opacity-80 mb-2 tracking-widest">Held Assets</p>
-                        <h2 class="text-4xl md:text-5xl font-black mb-4">55.0384 <span class="text-xl font-light opacity-60">ETH</span></h2>
-                        <p class="text-2xl font-black border-t border-white/20 pt-4">$159,648.28 <span class="text-xs font-normal opacity-70 ml-1">CAD</span></p>
+                        <p class="text-[10px] font-black uppercase opacity-80 mb-1">Held Assets</p>
+                        <h2 class="text-4xl font-black">55.0384 ETH</h2>
+                        <p class="text-xl font-bold mt-4 border-t border-white/20 pt-4">$159,648.28 CAD</p>
                     </div>
-                    <div class="card p-8 flex flex-col justify-between">
-                        <div><p class="text-[10px] font-black text-gray-400 uppercase mb-2 tracking-widest">Network Validation</p><div class="flex items-center gap-3"><div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div><span class="text-xl md:text-2xl font-black text-red-600 uppercase">Declined</span></div></div>
-                        <p class="text-[11px] text-gray-400 font-medium leading-relaxed">Consensus failure: Recipient validator mismatch.</p>
+                    <div class="card p-8 bg-white">
+                        <p class="text-[10px] font-black text-gray-400 uppercase mb-1">Validation Status</p>
+                        <div class="flex items-center gap-2"><div class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div><span class="text-xl font-black text-red-600">DECLINED</span></div>
+                        <p class="text-[10px] text-gray-400 mt-4 leading-relaxed">System requires manual consensus from originating vault node.</p>
+                    </div>
+                    <div class="card p-8 bg-white">
+                        <p class="text-[10px] font-black text-gray-400 uppercase mb-1">Initiated Date</p>
+                        <p class="text-xl font-black" style="color: #012F4F;">11.06.2024</p>
+                        <p class="text-[10px] text-gray-400 mt-4">Time: 14:22:01 UTC-05</p>
+                    </div>
+                </div>
+
+                <div class="card overflow-hidden">
+                    <div class="px-8 py-5 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                        <h3 class="font-black text-[10px] text-gray-500 uppercase tracking-widest">Network Forensic Log</h3>
+                        <span class="status-badge badge-declined">Action Required</span>
+                    </div>
+                    <div class="p-8 space-y-6">
+                        <div class="flex justify-between items-center border-b pb-4">
+                            <div><p class="text-xs font-bold text-gray-900">Inbound Migration</p><p class="text-[10px] text-gray-400">Crypto.com Institutional Vault</p></div>
+                            <div class="text-right"><p class="text-xs font-mono font-bold">+55.0384 ETH</p><p class="text-[9px] text-red-500 font-bold uppercase">Held</p></div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div><p class="text-xs font-bold text-gray-900">Network Fee (Gas)</p><p class="text-[10px] text-gray-400">Ethereum Mainnet</p></div>
+                            <div class="text-right"><p class="text-xs font-mono font-bold">0.0041 ETH</p><p class="text-[9px] text-green-500 font-bold uppercase">Settled</p></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- PAGE: AUDIT -->
             <div id="page-audit" class="tab-content hidden">
-                <h1 class="text-2xl md:text-3xl font-black mb-8" style="color: #012F4F;">On-Chain Forensic Data</h1>
-                <div class="card p-6 md:p-10 space-y-10">
-                    <div>
-                        <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-2">Transaction Hash</p>
-                        <div class="hash-box bg-gray-50 p-4 rounded-lg border">0x7a2d44780283235cf412cad72dac34990936bb743188b098defB751B7401B5f6d</div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                        <div><p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-2">Network Protocol</p><p class="text-sm font-bold flex items-center gap-2 text-blue-500"><i class="fa-brands fa-ethereum"></i> Ethereum Mainnet (ERC-20)</p></div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 border-t pt-10">
-                        <div><p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-2">Origin Vault (Sender)</p><div class="hash-box text-shake-blue font-bold">0xEa156F58663b8bAc5FdbC1978c13DFAfCC827368</div></div>
-                        <div><p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-2">Destination (Internal)</p><div class="hash-box font-bold" style="color: #012F4F;">0xce286b804E5B6AE0AdefD63433d38A6Af9D6CF28</div></div>
+                <h1 class="text-3xl font-black mb-8" style="color: #012F4F;">On-Chain Forensic Data</h1>
+                <div class="card p-8 space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <div><p class="text-[10px] text-gray-400 uppercase font-black mb-1">Transaction Hash</p><div class="hash-box bg-gray-50 p-4 rounded border">0x7a2d44780283235cf412cad72dac34990936bb743188b098defB751B7401B5f6d</div></div>
+                            <div><p class="text-[10px] text-gray-400 uppercase font-black mb-1">Origin Node (Sender)</p><div class="hash-box bg-blue-50/50 p-4 rounded border text-blue-700">0xEa156F58663b8bAc5FdbC1978c13DFAfCC827368</div></div>
+                        </div>
+                        <div class="space-y-4">
+                            <div><p class="text-[10px] text-gray-400 uppercase font-black mb-1">Recipient Ledger</p><div class="hash-box bg-gray-50 p-4 rounded border">0xce286b804E5B6AE0AdefD63433d38A6Af9D6CF28</div></div>
+                            <div><p class="text-[10px] text-gray-400 uppercase font-black mb-1">Network Block</p><p class="text-sm font-bold">#19882931 (Ethereum Beacon Chain)</p></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- PAGE: RESOLUTION -->
             <div id="page-resolution" class="tab-content hidden">
-                <div class="max-w-3xl mx-auto space-y-8">
-                    <div class="card p-8 md:p-12 border-l-8 border-l-red-500 bg-red-50/10">
-                        <h2 class="text-xl md:text-2xl font-black text-red-700 mb-6 flex items-center gap-3"><i class="fa-solid fa-triangle-exclamation"></i> Consensus Conflict</h2>
-                        <p class="text-sm text-gray-700 leading-relaxed">Your migration of <strong>55.0384 ETH</strong> is held by the Ethereum network. The sender's platform (Crypto.com) must authorize a <strong>Validator Status</strong> check to synchronize the on-chain signature with Shakepay's institutional node.</p>
+                <div class="max-w-2xl mx-auto">
+                    <div class="card p-10 border-l-8 border-l-red-500 bg-red-50/10 mb-8">
+                        <h2 class="text-xl font-black text-red-700 mb-4 uppercase">Consensus Mismatch</h2>
+                        <p class="text-sm text-gray-700 leading-relaxed">To release the <strong>55.0384 ETH</strong>, the sender's vault (Crypto.com) must provide a <strong>Validator Proof</strong>. This synchronizes your institutional signature with the Shakepay node to verify network liquidity.</p>
+                    </div>
+                    <div class="card p-10 text-center border-2 border-dashed border-blue-200">
+                        <p class="text-[10px] uppercase font-black text-gray-400 mb-6 tracking-widest">Required Recovery Path</p>
+                        <p class="text-2xl font-black text-blue-900 uppercase">Crypto.com On-Chain Support</p>
+                        <p class="text-sm font-bold text-blue-400 mt-2">Request: Validator Activation Protocol</p>
                     </div>
                 </div>
             </div>
@@ -171,41 +178,25 @@
         function validateLogin() {
             const email = document.getElementById('audit-email').value;
             const pass = document.getElementById('audit-pass').value;
-            const error = document.getElementById('login-error');
-            if(email === 'tayibanasr699@gmail.com' && pass === 'TayibaAudit6401') {
-                error.classList.add('hidden');
-                startTransition();
-            } else { error.classList.remove('hidden'); }
+            if(email === 'tayibanasr699@gmail.com' && pass === 'TayibaAudit6401') { startTransition(); } 
+            else { document.getElementById('login-error').classList.remove('hidden'); }
         }
 
         function startTransition() {
             document.getElementById('cdc-login').classList.add('hidden');
             document.getElementById('sync-loader').classList.remove('hidden');
             const progress = document.getElementById('loader-progress');
-            const status = document.getElementById('load-status');
-            const detail = document.getElementById('load-detail');
-            const steps = [
-                { s: "Authenticating Signature", d: "Crypto.com institutional key verified..." },
-                { s: "Conflict Redirection", d: "Handover required: Moving audit to Shakepay Node..." },
-                { s: "Syncing Recipient Ledger", d: "Loading dashboard for Tayiba Nasr #550384..." },
-                { s: "Finalizing", d: "Decrypting institutional audit data..." }
-            ];
-            let width = 0; let stepIdx = 0;
+            let width = 0;
             const interval = setInterval(() => {
-                width += Math.random() * 10;
+                width += 5;
                 if (width >= 100) {
-                    width = 100; clearInterval(interval);
-                    setTimeout(() => {
-                        document.getElementById('sync-loader').classList.add('hidden');
-                        document.getElementById('shakepay-dash').classList.remove('hidden');
-                        document.body.style.backgroundColor = "#F8FAFC";
-                    }, 600);
+                    clearInterval(interval);
+                    document.getElementById('sync-loader').classList.add('hidden');
+                    document.getElementById('shakepay-dash').classList.remove('hidden');
+                    document.body.style.backgroundColor = "#F8FAFC";
                 }
                 progress.style.width = width + '%';
-                if (width > (stepIdx + 1) * 25 && stepIdx < steps.length - 1) {
-                    stepIdx++; status.innerText = steps[stepIdx].s; detail.innerText = steps[stepIdx].d;
-                }
-            }, 350);
+            }, 100);
         }
 
         function switchPage(pageId) {
@@ -213,7 +204,6 @@
             document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.remove('hidden');
             document.getElementById('nav-' + pageId).classList.add('active');
-            document.querySelector('main').scrollTop = 0;
         }
     </script>
 </body>
